@@ -1,16 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import reduxThunk from "redux-thunk";
 import reportWebVitals from './reportWebVitals';
-import RootReducer from './reducers';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { createStore, applyMiddleware } from "redux";
-import { Provider } from 'react-redux';
 import Home from "./pages/Home/Home";
 import Progress from "./pages/Progress/Progress";
-
-const store = createStore(RootReducer, applyMiddleware(reduxThunk));
 
 const Routing = () => {
   return (
@@ -25,9 +19,7 @@ const Routing = () => {
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <Routing />
-    </Provider>
+    <Routing />
   </React.StrictMode>,
   document.getElementById('root')
 );

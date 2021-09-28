@@ -1,16 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
+import Button from '../../components/Button/Button';
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
 
 function Progress() {
-  const [value, setValue] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
-
-  const [progress, setProgress] = useState("")
-
-  let barData = data?.bars;
-  const buttonData = data?.buttons;
-  const limit = data?.limit;
+  const [selectedProgressBar, setSelectedProgressBar] = useState(0)
 
   useEffect(() => {
     fetchData();
@@ -18,50 +14,65 @@ function Progress() {
 
   const fetchData = async () => {
     try {
+      setLoading(true)
       const response = await fetch("http://pb-api.herokuapp.com/bars");
       const json = await response.json();
       setData(json)
+      setSelectedProgressBar(0)
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       console.log("error", error);
     }
   };
 
-
   const handleChange = (e) => {
-    console.log(e.target.value)
-    setValue(e.target.value)
+    const { value } = e.target
+    setSelectedProgressBar(value)
   }
 
   const handleClick = (d) => {
-    document.getElementById(`progress-${value}`).style.width = parseInt(document.getElementById(`progress-${value}`).style.width.split("%")[0]) + d + "%"
+    const altrData = JSON.parse(JSON.stringify(data))
+    if (altrData.bars[+selectedProgressBar] + Number(d) > 0) {
+      altrData.bars[+selectedProgressBar] += Number(d)
+    } else {
+      altrData.bars[+selectedProgressBar] = 0
+    }
+    setData(altrData)
   }
 
-  return (
-    <div>
-      <h1>Progress</h1>
-      {barData?.map((d, i) => {
-        return (
-          <div key={i}>
-            <ProgressBar id={`progress-${i}`} bgcolor="orange" progress={`${d}`} height={30} />
-          </div>
-        )
-      })}
 
-      <div style={{ display: "flex" }}>
-        <select value={value} onChange={handleChange}>
-          {barData?.map((d, i) => {
-            return <option value={i}>Progress Bar #{i + 1}</option>
-          })}
-        </select>
-        {buttonData?.map((d, i) => {
+  return (
+    <>
+      {loading && <div className="loader"></div>}
+      <div>
+        {data?.bars?.map((d, i) => {
           return (
             <div key={i}>
-              <button onClick={() => handleClick(d)}>{d}</button>
+              <ProgressBar progress={`${d}`} height={40} limit={data?.limit} />
             </div>
           )
         })}
+
+        <div className="container">
+          <div>
+            {data?.bars?.length > 0 &&
+              <select value={selectedProgressBar} onChange={handleChange}>
+                {data?.bars?.map((d, i) => {
+                  return <option key={i} value={i}>Progress Bar #{i + 1}</option>
+                })}
+              </select>}
+          </div>
+          <div className="button-container">
+            {data?.buttons?.map((d, i) => {
+              return (
+                <Button key={i} className="btn secondary" onClick={() => handleClick(d)}>{d < 0 ? d : "+" + d}</Button>
+              )
+            })}
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

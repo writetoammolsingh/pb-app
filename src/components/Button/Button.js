@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
+import "./Button.scss";
 
-function Button() {
+function Button({ children, onClick, className }) {
   return (
     <>
-      <button>Button</button>
+      <button className={className} onClick={onClick}>{children}</button>
     </>
   )
 }

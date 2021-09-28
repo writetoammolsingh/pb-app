@@ -1,5 +1,7 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
+import Button from '../../components/Button/Button';
+import right_arrow from "../../assets/icons/right-arrow.svg";
 
 function Home() {
   const history = useHistory();
@@ -10,8 +12,11 @@ function Home() {
 
   return (
     <div>
-      <h1>Home</h1>
-      <button onClick={handleClick}>Go To Progress</button>
+      <h1>Progress.ly</h1>
+      <Button className="btn primary" onClick={handleClick}>
+        Proceed to App
+        <img src={right_arrow} alt="arrow" style={{ marginLeft: "0.5rem" }} />
+      </Button>
     </div>
   )
 }
