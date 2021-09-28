@@ -15,7 +15,7 @@ function Progress() {
   const fetchData = async () => {
     try {
       setLoading(true)
-      const response = await fetch("http://pb-api.herokuapp.com/bars");
+      const response = await fetch("https://pb-api.herokuapp.com/bars");
       const json = await response.json();
       setData(json)
       setSelectedProgressBar(0)
