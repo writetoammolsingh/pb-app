@@ -1,8 +1,17 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen, cleanup } from "@testing-library/react";
+import Home from "./pages/Home/Home";
+import { Progress } from "./pages/Progress/Progress";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+afterEach(cleanup)
+
+test("Should render Home component", () => {
+  render(<Home />)
+  const homeComponent = screen.getByTestId("home-1")
+  expect(homeComponent).toBeInTheDocument();
+})
+
+test("Should render progress component", () => {
+  render(<Progress />)
+  const progressComponent = screen.getByTestId("progress-1")
+  expect(progressComponent).toBeInTheDocument();
+})

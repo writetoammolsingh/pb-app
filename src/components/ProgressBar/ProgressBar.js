@@ -1,13 +1,13 @@
 import React from 'react';
+import PropTypes from "prop-types";
 
-const ProgressBar = ({ progress, height, limit }) => {
-
+const ProgressBar = ({ progress, limit }) => {
   const isValueLessThanLimit = ((progress / limit) * 100) <= 100;
   const isValueGreaterThanLimit = ((progress / limit) * 100) > 100;
 
   const parentDiv = {
     position: "relative",
-    height: height,
+    height: 40,
     width: '100%',
     display: "flex",
     backgroundColor: "#e9eff0",
@@ -41,5 +41,11 @@ const ProgressBar = ({ progress, height, limit }) => {
     </div>
   )
 }
+
+
+ProgressBar.propTypes = {
+  progress: PropTypes.string,
+  limit: PropTypes.number
+};
 
 export default ProgressBar;
